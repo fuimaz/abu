@@ -496,7 +496,7 @@ class AbuMetricsBase(object):
         plt.show()
 
         self.log_func('最大回撤: {:5f}'.format(down_rate))
-        self.log_func('最大回测启始时间:{}, 结束时间{}, 共回测{:3f}'.format(
+        self.log_func('最大回撤启始时间:{}, 结束时间{}, 共回撤{:3f}'.format(
             ABuDateUtil.timestamp_to_str(list(six.iterkeys(max_draw_down))[0][0]),
             ABuDateUtil.timestamp_to_str(list(six.iterkeys(max_draw_down))[0][1]),
             list(six.itervalues(max_draw_down))[0]))

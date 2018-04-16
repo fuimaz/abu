@@ -16,6 +16,7 @@ import bokeh.plotting as bp
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+import matplotlib.dates as mdates
 
 from ..CoreBu import ABuEnv
 from ..MarketBu import ABuSymbolPd
@@ -248,7 +249,9 @@ def _do_plot_candle(date, p_open, high, low, close, volume, view_index, symbol, 
     # 需要内部import不然每次import abupy都有warning，特别是子进程很烦人
     try:
         # noinspection PyUnresolvedReferences, PyDeprecation
-        import matplotlib.finance as mpf
+        # import matplotlib.mpl_finance as mpf
+        # 改用其他导入方式
+        import mpl_finance as mpf
     except ImportError:
         # 2.2 才会有
         # noinspection PyUnresolvedReferences, PyDeprecation
@@ -274,7 +277,7 @@ def _do_plot_candle(date, p_open, high, low, close, volume, view_index, symbol, 
         # k线图绘制
         qutotes = []
         for index, (d, o, c, h, l) in enumerate(zip(date, p_open, close, high, low)):
-            d = index if minute else mpf.date2num(d)
+            d = index if minute else mdates.date2num(d)
             val = (d, o, c, h, l)
             qutotes.append(val)
         # mpf.candlestick_ochl即数据顺序为开收高低

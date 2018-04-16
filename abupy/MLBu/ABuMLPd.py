@@ -55,7 +55,7 @@ class AbuMLPd(six.with_metaclass(ABCMeta, object)):
         """
         if item.startswith('__'):
             # noinspection PyUnresolvedReferences
-            return super().__getattr__(item)
+            return super(AbuMLPd).__getattr__(item)
         return getattr(self.fiter, item)
 
     def __call__(self):

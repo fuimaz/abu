@@ -13,6 +13,7 @@ from . import ABuProgress
 from . import ABuPlatform
 from . import ABuKLUtil
 from . import ABuOsUtil
+from . import FuSplitDataFrame
 
 from .ABuProgress import AbuProgress, AbuBlockProgress, AbuMulPidProgress
 
@@ -32,5 +33,6 @@ __all__ = [
     'AbuMulPidProgress',
     'ABuPlatform',
     'ABuKLUtil',
-    'ABuOsUtil'
+    'ABuOsUtil',
+    'FuSplitDataFrame'
 ]

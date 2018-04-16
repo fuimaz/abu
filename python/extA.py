@@ -51,30 +51,31 @@ def sample_a21():
     print(ABuSymbolPd.make_kl_df('601398').tail())
 
     # 局部使用enable_example_env_ipython，示例
-    abupy.env.enable_example_env_ipython()
+    # abupy.env.enable_example_env_ipython()
     # 如果本地有相应股票的缓存，可以使用如下代码强制使用本地缓存数据
-    # abupy.env.g_data_fetch_mode = EMarketDataFetchMode.E_DATA_FETCH_FORCE_LOCAL
+    abupy.env.g_data_fetch_mode = EMarketDataFetchMode.E_DATA_FETCH_FORCE_LOCAL
 
     # 设置初始资金数
     read_cash = 1000000
 
-    # 择时股票池
-    choice_symbols = ['usNOAH', 'usSFUN', 'usBIDU', 'usAAPL', 'usGOOG', 'usTSLA', 'usWUBA', 'usVIPS']
-    # 使用run_loop_back运行策略
-    abu_result_tuple, _ = abu.run_loop_back(read_cash,
-                                            buy_factors, sell_factors, stock_pickers, choice_symbols=choice_symbols,
-                                            n_folds=2)
-    metrics = AbuMetricsBase(*abu_result_tuple)
-    metrics.fit_metrics()
-    metrics.plot_returns_cmp()
+    # # 择时股票池
+    # choice_symbols = ['usNOAH', 'usSFUN', 'usBIDU', 'usAAPL', 'usGOOG', 'usTSLA', 'usWUBA', 'usVIPS']
+    # # 使用run_loop_back运行策略
+    # abu_result_tuple, _ = abu.run_loop_back(read_cash,
+    #                                         buy_factors, sell_factors, stock_pickers, choice_symbols=choice_symbols,
+    #                                         n_folds=2)
+    # metrics = AbuMetricsBase(*abu_result_tuple)
+    # metrics.fit_metrics()
+    # metrics.plot_returns_cmp()
 
     # *****************************************************************************************************************
     # 切换数据源
-    abupy.env.g_market_source = EMarketSourceType.E_MARKET_SOURCE_tx
+    abupy.env.g_market_source = EMarketSourceType.E_MARKET_SOURCE_bd
     # 强制走网络数据源
-    abupy.env.g_data_fetch_mode = EMarketDataFetchMode.E_DATA_FETCH_FORCE_NET
+    # abupy.env.g_data_cache_type = EMarketDataFetchMode.E_DATA_CACHE_HDF5
     # 择时股票池
-    choice_symbols = ['601398', '600028', '601857', '601318', '600036', '000002', '600050', '600030']
+    # choice_symbols = ['601398', '600028', '601857', '601318', '600036', '000002', '600050', '600030']
+    choice_symbols = ['601398']
     # 使用run_loop_back运行策略
     abu_result_tuple, _ = abu.run_loop_back(read_cash,
                                             buy_factors, sell_factors, stock_pickers, choice_symbols=choice_symbols,

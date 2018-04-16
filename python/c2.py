@@ -906,14 +906,18 @@ def sample_25():
         pdb.set_trace()
 
 if __name__ == "__main__":
-    sample_211()
+    # sample_211()
+    # abupy.env.g_market_source = abupy.EMarketSourceType.E_MARKET_SOURCE_bd
+    # abupy.env.g_data_cache_type = abupy.EDataCacheType.E_DATA_CACHE_HDF5
+    # abupy.abu.run_kl_update(start='2014-08-08', end='2018-03-30', market=abupy.EMarketTargetType.E_MARKET_TARGET_CN,
+    #                         n_jobs=10)
     # sample_212()
     # sample_221()
     # sample_222()
     # sample_223()
     # sample_224()
     # sample_231()
-    # sample_232()
+    sample_232()
     # sample_233_1()
     # sample_233_2()
     # sample_241_1()
