@@ -154,7 +154,7 @@ class BDApi(StockBaseMarket, SupportMixin):
 class TXApi(StockBaseMarket, SupportMixin):
     """tx数据源，支持港股，美股，a股"""
 
-    K_NET_BASE = "http://ifzq.gtimg.cn/appstock/app/%sfqkline/get?p=1&param=%s,day,,,%d," \
+    K_NET_BASE = "http://ifzq.gtimg.cn/appstock/app/%sfqkline/get?p=1&param=%s,day,%s,%s,%d," \
                  "qfq&_appName=android&_dev=%s&_devId=%s&_mid=%s&_md5mid=%s&_appver=4.2.2&_ifChId=303&_screenW=%d" \
                  "&_screenH=%d&_osVer=%s&_uin=10000&_wxuin=20000&__random_suffix=%d"
 
@@ -220,7 +220,7 @@ class TXApi(StockBaseMarket, SupportMixin):
         else:
             market = ''
             url = TXApi.K_NET_BASE % (
-                market, self._symbol.value, days,
+                market, self._symbol.value, start, end, days,
                 dev_mod, cuid, cuid, cuid_md5, screen[0], screen[1], os_ver, int(random_suffix, 10))
 
         data = ABuNetWork.get(url, timeout=K_TIME_OUT)

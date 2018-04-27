@@ -10,8 +10,8 @@ import warnings
 from sklearn.metrics import accuracy_score
 
 import abupy
-from sklearn import metrics
-from abupy import ABuSymbolPd, metrics, AbuUmpMainJump, AbuUmpMainPrice, AbuUmpMainWave
+from abupy import AbuUmpMainJump, AbuUmpMainPrice, AbuUmpMainWave, MyBuyBollBreak, \
+    AbuSlippageBuyMean, AbuKellyPosition, FuBuyAppendTrade, MyBollSellBreak, AbuUmpMainDegExtend, AbuUmpMainMul
 from abupy import EMarketSourceType
 from abupy import EMarketDataFetchMode
 from abupy import AbuMetricsBase
@@ -30,16 +30,16 @@ abupy.slippage.sbm.g_open_down_rate = 0.04
 # 设置选股因子，None为不使用选股因子
 stock_pickers = None
 buy_factors = [{'past_factor': 4, 'up_deg_threshold': 3, 'poly': 2, 'nb_dev': 2,
-                'time_period': 20, 'atr_off': True, 'class': abupy.MyBuyBollBreak,
-                'slippage': abupy.AbuSlippageBuyMean,
-                'position': {'class': abupy.AbuKellyPosition, 'win_rate': 0.6,
+                'time_period': 20, 'atr_off': True, 'class': MyBuyBollBreak,
+                'slippage': AbuSlippageBuyMean,
+                'position': {'class': AbuKellyPosition, 'win_rate': 0.6,
                 'gains_mean': 0.19, 'losses_mean': -0.04}},
-               {'position': {'class': abupy.AbuKellyPosition}, 'slippage': abupy.AbuSlippageBuyMean, 'class': abupy.FuBuyAppendTrade}
+               {'position': {'class': AbuKellyPosition}, 'slippage': AbuSlippageBuyMean, 'class': FuBuyAppendTrade}
                ]
 
 sell_factors = [
     {'nb_dev': 2, 'time_period': 20,
-     'class': abupy.MyBollSellBreak}]
+     'class': MyBollSellBreak}]
 
 # 手续费计算
 commission_dict = {'buy_commission_func': calc_commission_cn}
@@ -47,7 +47,7 @@ commission_dict = {'buy_commission_func': calc_commission_cn}
 # 市场，缓存，数据源配置
 ABuEnv.g_data_fetch_mode = EMarketDataFetchMode.E_DATA_FETCH_FORCE_LOCAL
 ABuEnv.g_market_target = abupy.EMarketTargetType.E_MARKET_TARGET_CN
-ABuEnv.g_market_source = EMarketSourceType.E_MARKET_SOURCE_bd
+ABuEnv.g_market_source = EMarketSourceType.E_MARKET_SOURCE_tx
 # ABuEnv.g_data_cache_type = abupy.EDataCacheType.E_DATA_CACHE_HDF5
 ABuEnv.g_data_cache_type = abupy.EDataCacheType.E_DATA_CACHE_CSV
 
@@ -147,12 +147,12 @@ def sample_ump_train():
 
 
 def load_abu_result_tuple():
-    abu_result_tuple_train = abu.load_abu_result_tuple(n_folds=7, store_type=abupy.EStoreAbu.E_STORE_CUSTOM_NAME,
+    abu_result_tuple_train = abu.load_abu_result_tuple(n_folds=6, store_type=abupy.EStoreAbu.E_STORE_CUSTOM_NAME,
                                                        # custom_name='tt_train_cn')
                                                        custom_name='all_top_train_cn')
-    abu_result_tuple_test = abu.load_abu_result_tuple(n_folds=7, store_type=abupy.EStoreAbu.E_STORE_CUSTOM_NAME,
+    abu_result_tuple_test = abu.load_abu_result_tuple(n_folds=6, store_type=abupy.EStoreAbu.E_STORE_CUSTOM_NAME,
                                                       # custom_name='tt_test_cn')
-                                                      custom_name='all_top_train_cn')
+                                                      custom_name='all_top_test_cn')
     metrics_train = AbuMetricsBase(*abu_result_tuple_train)
     metrics_train.fit_metrics()
     metrics_test = AbuMetricsBase(*abu_result_tuple_test)
@@ -303,7 +303,7 @@ def sample_1125():
     abu_result_tuple_train, abu_result_tuple_test, metrics_train, metrics_test = load_abu_result_tuple()
     orders_pd_train = abu_result_tuple_train.orders_pd
     # 文件保存在~/abu/data/save_png/中
-    ump_wave = abupy.AbuUmpMainWave.ump_main_clf_dump(orders_pd_train, save_order=True)
+    ump_wave = abupy.AbuUmpMainWave.ump_main_clf_dump(orders_pd_train, save_order=False)
     print('ump_wave.fiter.df.head():\n', ump_wave.fiter.df.head())
 
     print('失败概率最大的分类簇{0}'.format(ump_wave.cprs.lrs.argmax()))
@@ -387,7 +387,26 @@ def sample_ump():
 
 
 def start_ump_train():
-    sample_112()
+    # abu_result_tuple_train, abu_result_tuple_test, metrics_train, metrics_test = load_abu_result_tuple()
+    # orders_pd_train_cn = abu_result_tuple_train.orders_pd
+
+    # print('训练集结果：')
+    # metrics_train = AbuMetricsBase.show_general(*abu_result_tuple_train, only_show_returns=True)
+    # print('测试集结果：')
+    # metrics_test = AbuMetricsBase.show_general(*abu_result_tuple_test, only_show_returns=True)
+
+    # AbuUmpMainDeg.ump_main_clf_dump(orders_pd_train_cn, save_order=False, show_order=False)
+    # print('AbuUmpMainPrice begin...')
+    # AbuUmpMainPrice.ump_main_clf_dump(orders_pd_train_cn, save_order=False, show_order=False)
+    #
+    # mp_price = AbuUmpMainPrice.ump_main_clf_dump(orders_pd_train_cn, save_order=False)
+    # print('AbuUmpMainMul begin...')
+    # AbuUmpMainMul.ump_main_clf_dump(orders_pd_train_cn, save_order=False, show_order=False)
+    # print('AbuUmpMainDegExtend begin...')
+    # AbuUmpMainDegExtend.ump_main_clf_dump(orders_pd_train_cn, save_order=False, show_order=False)
+    # 依然使用load_main_ump，避免下面多进程内存拷贝过大
+    # load_main_ump()
+    # sample_112()
     sample_1123()
     sample_1124()
     sample_1125()
