@@ -154,11 +154,11 @@ class BDApi(StockBaseMarket, SupportMixin):
 class TXApi(StockBaseMarket, SupportMixin):
     """tx数据源，支持港股，美股，a股"""
 
-    # K_NET_BASE = "http://ifzq.gtimg.cn/appstock/app/%sfqkline/get?p=1&param=%s,day,%s,%s,%d," \
-    #              "qfq&_appName=android&_dev=%s&_devId=%s&_mid=%s&_md5mid=%s&_appver=4.2.2&_ifChId=303&_screenW=%d" \
-    #              "&_screenH=%d&_osVer=%s&_uin=10000&_wxuin=20000&__random_suffix=%d"
-    K_NET_BASE = "http://ifzq.gtimg.cn/appstock/app/fqkline/get?p_var=kline_dayqfq&param=%s,day,%s,%s,320,qfq&_appName=android&_dev=%s&_devId=%s&_mid=%s&_md5mid=%s&_appver=4.2.2&_ifChId=303&_screenW=%d" \
-                 "&_screenH=%d&_osVer=%s&_uin=10000&_wxuin=20000&__random_suffix=%d&r=0.444157593883574"
+    K_NET_BASE = "http://ifzq.gtimg.cn/appstock/app/%sfqkline/get?p=1&param=%s,day,%s,%s,%d," \
+                 "qfq&_appName=android&_dev=%s&_devId=%s&_mid=%s&_md5mid=%s&_appver=4.2.2&_ifChId=303&_screenW=%d" \
+                 "&_screenH=%d&_osVer=%s&_uin=10000&_wxuin=20000&__random_suffix=%d"
+    # K_NET_BASE = "http://ifzq.gtimg.cn/appstock/app/%sfqkline/get?p_var=kline_dayqfq&param=%s,day,%s,%s,%d,qfq&_appName=android&_dev=%s&_devId=%s&_mid=%s&_md5mid=%s&_appver=4.2.2&_ifChId=303&_screenW=%d" \
+    #              "&_screenH=%d&_osVer=%s&_uin=10000&_wxuin=20000&__random_suffix=%d&r=0.444157593883574"
 
     K_NET_HK_MNY = 'http://proxy.finance.qq.com/ifzqgtimg/stock/corp/hkmoney/sumary?' \
                    'symbol=%s&type=sum&jianjie=1&_appName=android' \
