@@ -4,18 +4,18 @@
 """
 
 from __future__ import absolute_import
-from __future__ import print_function
 from __future__ import division
+from __future__ import print_function
 
-import numpy as np
 import pandas as pd
 
+from abupy.CoreBu.FuTodayRecord import FuTodayCanBuyRecord
 from abupy.IndicatorBu.ABuNDBoll import calc_boll
 from abupy.IndicatorBu.ABuNDMacd import calc_macd
 from .ABuFactorBuyBase import AbuFactorBuyXD, BuyCallMixin
 from ..TLineBu.ABuTL import AbuTLine
 
-__author__ = '阿布'
+__author__ = '居尘'
 __weixin__ = 'abu_quant'
 
 
@@ -122,9 +122,17 @@ class MyBuyBollBreak(AbuFactorBuyXD, BuyCallMixin):
             if dif[pre_i] < dea[pre_i] and dif[now_i] >= dea[now_i]:
                 # print(u"macd金叉， 买入", "pre_close=", str(today.pre_close), "middle=", str(middle[int(today.key) - 1]),
                 #       "close=", str(today.close), "middle=", str(middle[int(today.key)]), 'date=', str(today.date))
-                return self.buy_tomorrow()
+                order = self.buy_tomorrow()
+                if order is not None:
+                    today_record = FuTodayCanBuyRecord()
+                    today_record.record_today_can_buy_stock(today, self.kl_pd.name, 1)
+                return order
 
         if today.pre_close <= middle[int(today.key) - 1] and today.close >= middle[int(today.key)]:
             # print(u"穿过布林带中间线， 买入", "pre_close=", str(today.pre_close), "middle=", str(middle[int(today.key) - 1]),
             #       "close=", str(today.close), "middle=", str(middle[int(today.key)]), 'date=', str(today.date))
-            return self.buy_tomorrow()
+            order = self.buy_tomorrow()
+            if order is not None:
+                today_record = FuTodayCanBuyRecord()
+                today_record.record_today_can_buy_stock(today, self.kl_pd.name, 2)
+            return order

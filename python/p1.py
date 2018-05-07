@@ -21,6 +21,7 @@ from abupy import abu
 from abupy.CoreBu import ABuEnv
 from abupy.IndicatorBu.ABuNDBoll import calc_boll
 from abupy.IndicatorBu.ABuNDMacd import calc_macd
+from abupy.IndicatorBu.ABuNDRsi import calc_rsi
 from abupy.TLineBu.ABuTLWave import calc_wave_std, calc_wave_abs
 
 warnings.filterwarnings('ignore')
@@ -39,9 +40,6 @@ sell_factors = [
     {'class': AbuFactorCloseAtrNStop, 'close_atr_n': 1.5}
 ]
 
-
-if not ABuEnv.g_is_mac_os:
-    ABuEnv.g_project_root = "D:\\abu"
 abupy.env.disable_example_env_ipython()
 # ABuEnv.g_data_fetch_mode = EMarketDataFetchMode.E_DATA_FETCH_FORCE_LOCAL
 ABuEnv.g_data_fetch_mode = EMarketDataFetchMode.E_DATA_FETCH_FORCE_NET
@@ -49,8 +47,6 @@ ABuEnv.g_market_target = abupy.EMarketTargetType.E_MARKET_TARGET_CN
 ABuEnv.g_market_source = EMarketSourceType.E_MARKET_SOURCE_tx
 ABuEnv.g_data_cache_type = abupy.EDataCacheType.E_DATA_CACHE_CSV
 # ABuEnv.g_data_cache_type = abupy.EDataCacheType.E_DATA_CACHE_HDF5
-
-# ABuEnv.g_project_root = "D:\\abu"
 
 
 def sample_a21():
@@ -102,18 +98,19 @@ def sample_12():
 
 
 def sample_13():
-    if not ABuEnv.g_is_mac_os:
-        ABuEnv.g_project_root = "D:\\abu"
     kl_pd = ABuSymbolPd.make_kl_df('601398', data_mode=ABuEnv.EMarketDataSplitMode.E_DATA_SPLIT_UNDO,
-                                   start='2012-04-20', end='2016-04-20',
+                                   start='2012-04-20', end='2018-04-20',
                                    parallel=False)
     print(kl_pd)
     # kl_pd.to_csv("/Users/juchen/abu/601398.csv")
 
-    # upper, middle, lower = calc_boll(kl_pd.close, 20, 2)
-    # print(middle)
-    # print(lower)
-    # abupy.nd.boll.plot_boll_from_klpd(kl_pd)
+    upper, middle, lower = calc_boll(kl_pd.close, 20, 2)
+    print(middle)
+    print(lower)
+    rsi = calc_rsi(kl_pd.close)
+    print(rsi)
+    abupy.nd.boll.plot_boll_from_klpd(kl_pd)
+    abupy.nd.rsi.plot_rsi_from_klpd(kl_pd)
 
 
 def sample_14():
