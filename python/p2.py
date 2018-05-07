@@ -89,6 +89,7 @@ def sample_a21():
     # metrics.plot_keep_days()
     # plt.show()
     metrics.plot_max_draw_down()
+    print(today_record.load_today_stock().symbol)
     # plt.show()
 
 
