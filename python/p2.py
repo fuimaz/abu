@@ -120,7 +120,7 @@ def sample_a22():
 
     abu_result_tuple, _ = abu.run_loop_back(read_cash,
                                             buy_factors, sell_factors, stock_pickers, choice_symbols=choice_symbols,
-                                            n_folds=7, commission_dict=commission_dict)
+                                            n_folds=1, commission_dict=commission_dict)
 
     # AbuMetricsBase.show_general(*abu_result_tuple, only_show_returns=True)
 
@@ -132,6 +132,7 @@ def sample_a22():
 
     # 保存交易结果
     store_abu_result_out_put(abu_result_tuple)
+    today_record.store_today_can_buy_stock()
     metrics.plot_returns_cmp(only_info=True)
     # metrics.plot_buy_factors()
     # metrics.plot_sell_factors()
