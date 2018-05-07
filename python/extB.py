@@ -36,7 +36,7 @@ def sample_b0():
     abupy.env.g_market_source = EMarketSourceType.E_MARKET_SOURCE_tx
     abupy.env.g_data_cache_type = EDataCacheType.E_DATA_CACHE_CSV
     # 首选这里预下载市场中所有股票的6年数据(做5年回测，需要预先下载6年数据)
-    abu.run_kl_update(start='2010-04-20', end='2018-05-04', market=EMarketTargetType.E_MARKET_TARGET_CN, how="main")
+    abu.run_kl_update(market=EMarketTargetType.E_MARKET_TARGET_CN)
 
 
 def sample_b1():
