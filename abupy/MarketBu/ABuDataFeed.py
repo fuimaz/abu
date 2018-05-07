@@ -220,10 +220,17 @@ class TXApi(StockBaseMarket, SupportMixin):
                 market, self._symbol.value, days,
                 dev_mod, cuid, cuid, cuid_md5, screen[0], screen[1], os_ver, int(random_suffix, 10))
         else:
-            market = ''
-            url = TXApi.K_NET_BASE % (
-                market, self._symbol.value, start, end, days,
-                dev_mod, cuid, cuid, cuid_md5, screen[0], screen[1], os_ver, int(random_suffix, 10))
+            # fu 为了能更新到今天的数据
+            if str(sqlite.datetime.date.today()) == end:
+                market = ''
+                url = TXApi.K_NET_BASE % (
+                    market, self._symbol.value, start, '', days,
+                    dev_mod, cuid, cuid, cuid_md5, screen[0], screen[1], os_ver, int(random_suffix, 10))
+            else:
+                market = ''
+                url = TXApi.K_NET_BASE % (
+                    market, self._symbol.value, start, end, days,
+                    dev_mod, cuid, cuid, cuid_md5, screen[0], screen[1], os_ver, int(random_suffix, 10))
 
         data = ABuNetWork.get(url, timeout=K_TIME_OUT)
         if data is not None:
