@@ -149,10 +149,10 @@ def sample_ump_train():
 def load_abu_result_tuple():
     abu_result_tuple_train = abu.load_abu_result_tuple(n_folds=6, store_type=abupy.EStoreAbu.E_STORE_CUSTOM_NAME,
                                                        # custom_name='tt_train_cn')
-                                                       custom_name='all_top_train_cn')
+                                                       custom_name='18_6_top_train_cn')
     abu_result_tuple_test = abu.load_abu_result_tuple(n_folds=6, store_type=abupy.EStoreAbu.E_STORE_CUSTOM_NAME,
                                                       # custom_name='tt_test_cn')
-                                                      custom_name='all_top_test_cn')
+                                                      custom_name='18_6_top_test_cn')
     metrics_train = AbuMetricsBase(*abu_result_tuple_train)
     metrics_train.fit_metrics()
     metrics_test = AbuMetricsBase(*abu_result_tuple_test)
@@ -406,7 +406,7 @@ def start_ump_train():
     # AbuUmpMainDegExtend.ump_main_clf_dump(orders_pd_train_cn, save_order=False, show_order=False)
     # 依然使用load_main_ump，避免下面多进程内存拷贝过大
     # load_main_ump()
-    # sample_112()
+    sample_112()
     sample_1123()
     sample_1124()
     sample_1125()
