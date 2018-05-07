@@ -10,6 +10,7 @@ from .ABuEnv import EMarketSourceType, EMarketTargetType, EMarketSubType, \
 from .ABuBase import AbuParamBase, FreezeAttrMixin, PickleStateMixin
 from .ABuParallel import Parallel, delayed
 from .ABuStore import AbuResultTuple, EStoreAbu
+from .FuTodayRecord import FuTodayCanBuyRecord
 
 __all__ = [
     'abu',
@@ -19,6 +20,7 @@ __all__ = [
     'AbuParamBase',
     'FreezeAttrMixin',
     'PickleStateMixin',
+    'FuTodayCanBuyRecord',
     'Parallel',
     'delayed',
     'EMarketSourceType',

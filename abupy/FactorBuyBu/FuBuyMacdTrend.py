@@ -16,7 +16,7 @@ from ..TLineBu.ABuTL import AbuTLine
 
 
 # noinspection PyAttributeOutsideInit
-class MyBuyBollBreak(AbuFactorBuyXD, BuyCallMixin):
+class FuBuyMacdTrend(AbuFactorBuyXD, BuyCallMixin):
 
     def _init_self(self, **kwargs):
         """
@@ -27,7 +27,7 @@ class MyBuyBollBreak(AbuFactorBuyXD, BuyCallMixin):
         if 'xd' not in kwargs:
             # 如果外部没有设置xd值，默认给一个30
             kwargs['xd'] = 20
-        super(MyBuyBollBreak, self)._init_self(**kwargs)
+        super(FuBuyMacdTrend, self)._init_self(**kwargs)
         # 代表长线的趋势判断长度，默认4，long = xd * past_factor->eg: long = 30 * 4
         self.past_factor = kwargs.pop('past_factor', 4)
         # 代表判断上涨趋势拟合角度阀值，即长线拟合角度值多少决策为上涨，默认4
