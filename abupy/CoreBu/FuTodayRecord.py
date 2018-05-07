@@ -41,3 +41,10 @@ class FuTodayCanBuyRecord:
         fn = os.path.join(ABuEnv.g_project_data_dir, base_dir, date_dir, 'today_actions.csv')
         ABuFileUtil.ensure_dir(fn)
         ABuFileUtil.dump_df_csv(fn, FuTodayCanBuyRecord.canBuyList)
+
+    def load_today_stock(self):
+        base_dir = 'out_put'
+        # 时间字符串
+        date_dir = datetime.datetime.now().strftime("%Y_%m_%d")
+        fn = os.path.join(ABuEnv.g_project_data_dir, base_dir, date_dir, 'today_actions.csv')
+        return ABuFileUtil.load_df_csv(fn)
