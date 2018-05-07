@@ -48,3 +48,13 @@ class FuTodayCanBuyRecord:
         date_dir = datetime.datetime.now().strftime("%Y_%m_%d")
         fn = os.path.join(ABuEnv.g_project_data_dir, base_dir, date_dir, 'today_actions.csv')
         return ABuFileUtil.load_df_csv(fn)
+
+    def load_today_stock_list(self):
+        df = self.load_today_stock()
+        if df is None or len(df.symbol.tolist()) == 0:
+            return None
+        stock_list = []
+        raw_list = set(df.symbol.tolist())
+        for symbol in raw_list:
+            stock_list.append(str(symbol))
+        return stock_list
