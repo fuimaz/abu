@@ -24,9 +24,12 @@ class FuTodayCanBuyRecord:
             return
 
         today_date = int(str(datetime.date.today()).replace('-', ''))
-        if today_date != today.date:
+        logging.info("before check date, %s %d %f" % (buy_symbol, today.date, today.close))
+        # print(today.date, int(today.date), today_date)
+        if today_date != int(today.date):
             return
 
+        print(buy_symbol, today.date, today.close)
         logging.info("%s %d %f" % (buy_symbol, today.date, today.close))
 
         df_temp = pd.DataFrame([[buy_symbol, today.date, today.close, type]], columns=['symbol', 'date', 'price', 'type'])
