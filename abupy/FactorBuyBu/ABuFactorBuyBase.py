@@ -278,8 +278,8 @@ class AbuFactorBuyBase(six.with_metaclass(ABCMeta, AbuParamBase)):
         # 今天这个交易日在整个金融时间序列的序号
         self.today_ind = int(today.key)
         # 回测中默认忽略最后一个交易日
-        if self.today_ind >= self.kl_pd.shape[0] - 1:
-            return None
+        # if self.today_ind >= self.kl_pd.shape[0] - 1:
+        #     return None
 
         return self.fit_day(today)
 
@@ -436,8 +436,8 @@ class AbuFactorBuyXD(AbuFactorBuyBase):
         # 今天这个交易日在整个金融时间序列的序号
         self.today_ind = int(today.key)
         # 回测中默认忽略最后一个交易日
-        if self.today_ind >= self.kl_pd.shape[0] - 1:
-            return None
+        # if self.today_ind >= self.kl_pd.shape[0] - 1:
+        #     return None
 
         # 忽略不符合买入的天（统计周期内前xd天）
         if self.today_ind < self.xd - 1:
