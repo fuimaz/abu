@@ -98,7 +98,8 @@ class MyBuyBollBreak(AbuFactorBuyXD, BuyCallMixin):
         upper, middle, lower = calc_boll(self.kl_pd.close, self.time_period, self.nb_dev)
         dif, dea, bar = calc_macd(self.kl_pd.close)
 
-        if pd.isnull(middle[int(today.key) - 1]):
+        # if pd.isnull(middle[int(today.key) - 1]):
+        if pd.isnull(middle[int(today.key)]):
             return None
 
         # long_kl = self.past_today_kl(today, 21)

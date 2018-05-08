@@ -28,7 +28,7 @@ buy_factors = [{'past_factor': 4, 'up_deg_threshold': 3, 'poly': 2, 'nb_dev': 2,
                 'slippage': abupy.AbuSlippageBuyMean,
                 'position': {'class': abupy.AbuKellyPosition, 'win_rate': 0.6,
                 'gains_mean': 0.19, 'losses_mean': -0.04}},
-               {'position': {'class': abupy.AbuKellyPosition}, 'slippage': abupy.AbuSlippageBuyMean, 'class': abupy.FuBuyAppendTrade}
+               {'position': {'class': abupy.AbuKellyPosition}, 'slippage': abupy.FuSlippageBuyClose, 'class': abupy.FuBuyAppendTrade}
                ]
 
 sell_factors = [
