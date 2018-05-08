@@ -8,6 +8,7 @@ from __future__ import division
 from __future__ import print_function
 
 import pandas as pd
+import logging
 
 from abupy.CoreBu.FuTodayRecord import FuTodayCanBuyRecord
 from abupy.IndicatorBu.ABuNDBoll import calc_boll
@@ -83,6 +84,7 @@ class MyBuyBollBreak(AbuFactorBuyXD, BuyCallMixin):
             self.lock = True
 
     def fit_day(self, today):
+        logging.info("enter fit_day, %s %d %f" % (self.kl_pd.name, today.date, today.close))
         if self.lock:
             # 如果封锁策略进行交易的情况下，策略不进行择时
             return None
@@ -122,7 +124,7 @@ class MyBuyBollBreak(AbuFactorBuyXD, BuyCallMixin):
             if dif[pre_i] < dea[pre_i] and dif[now_i] >= dea[now_i]:
                 # print(u"macd金叉， 买入", "pre_close=", str(today.pre_close), "middle=", str(middle[int(today.key) - 1]),
                 #       "close=", str(today.close), "middle=", str(middle[int(today.key)]), 'date=', str(today.date))
-                order = self.buy_tomorrow()
+                order = self.buy_today()
                 if order is not None:
                     today_record = FuTodayCanBuyRecord()
                     today_record.record_today_can_buy_stock(today, self.kl_pd.name, 1)
@@ -131,7 +133,7 @@ class MyBuyBollBreak(AbuFactorBuyXD, BuyCallMixin):
         if today.pre_close <= middle[int(today.key) - 1] and today.close >= middle[int(today.key)]:
             # print(u"穿过布林带中间线， 买入", "pre_close=", str(today.pre_close), "middle=", str(middle[int(today.key) - 1]),
             #       "close=", str(today.close), "middle=", str(middle[int(today.key)]), 'date=', str(today.date))
-            order = self.buy_tomorrow()
+            order = self.buy_today()
             if order is not None:
                 today_record = FuTodayCanBuyRecord()
                 today_record.record_today_can_buy_stock(today, self.kl_pd.name, 2)
