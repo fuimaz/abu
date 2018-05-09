@@ -1,8 +1,10 @@
 # -*- encoding:utf-8 -*-
 from __future__ import print_function
 
+import os
 import warnings
 
+import datetime
 import seaborn as sns
 
 import abupy
@@ -116,7 +118,7 @@ def sample_a22():
                       # '600887', '600029', '000002', '600196', '002024', '002241', '600050', '601989', '601992', '601901']
     # choice_symbols = ['601398', '601988', '601939', '603993', '600196', '600660', '600703', '600887', '600999', '300059', '600900', '601328', '601288', '600887', '600029', '000002']
 
-    choice_symbols = today_record.load_today_stock_list()
+    choice_symbols = load_today_stock_list()
 
     abu_result_tuple, _ = abu.run_loop_back(read_cash,
                                             buy_factors, sell_factors, stock_pickers, choice_symbols=choice_symbols,
@@ -202,6 +204,21 @@ def sample_a23():
     # plt.show()
     metrics.plot_max_draw_down()
     # plt.show()
+
+
+def load_today_stock_list():
+    base_dir = 'out_put'
+    # 时间字符串
+    date_dir = datetime.datetime.now().strftime("%Y_%m_%d")
+    fn = os.path.join(ABuEnv.g_project_data_dir, base_dir, date_dir, 'today_actions.csv')
+    df = abupy.ABuFileUtil.load_df_csv(fn)
+    if df is None or len(df.symbol.tolist()) == 0:
+        return None
+    stock_list = []
+    raw_list = set(df.symbol.tolist())
+    for symbol in raw_list:
+        stock_list.append(str(symbol))
+    return stock_list
 
 if __name__ == "__main__":
     sample_a21()
