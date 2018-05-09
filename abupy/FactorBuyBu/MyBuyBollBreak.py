@@ -32,7 +32,7 @@ class MyBuyBollBreak(AbuFactorBuyXD, BuyCallMixin):
         """
         if 'xd' not in kwargs:
             # 如果外部没有设置xd值，默认给一个30
-            kwargs['xd'] = 20
+            kwargs['xd'] = 2
         super(MyBuyBollBreak, self)._init_self(**kwargs)
         # 代表长线的趋势判断长度，默认4，long = xd * past_factor->eg: long = 30 * 4
         self.past_factor = kwargs.pop('past_factor', 4)
@@ -84,7 +84,7 @@ class MyBuyBollBreak(AbuFactorBuyXD, BuyCallMixin):
             self.lock = True
 
     def fit_day(self, today):
-        logging.info("enter fit_day, %s %d %f" % (self.kl_pd.name, today.date, today.close))
+        # logging.info("enter fit_day, %s %d %f" % (self.kl_pd.name, today.date, today.close))
         if self.lock:
             # 如果封锁策略进行交易的情况下，策略不进行择时
             return None
@@ -125,17 +125,14 @@ class MyBuyBollBreak(AbuFactorBuyXD, BuyCallMixin):
             if dif[pre_i] < dea[pre_i] and dif[now_i] >= dea[now_i]:
                 # print(u"macd金叉， 买入", "pre_close=", str(today.pre_close), "middle=", str(middle[int(today.key) - 1]),
                 #       "close=", str(today.close), "middle=", str(middle[int(today.key)]), 'date=', str(today.date))
-                order = self.buy_today()
-                if order is not None:
-                    today_record = FuTodayCanBuyRecord()
-                    today_record.record_today_can_buy_stock(today, self.kl_pd.name, 1)
-                return order
+                # order =
+                # if order is not None:
+                #     today_record = FuTodayCanBuyRecord()
+                #     today_record.record_today_can_buy_stock(today, self.kl_pd.name, 1)
+                return self.buy_today()
 
         if today.pre_close <= middle[int(today.key) - 1] and today.close >= middle[int(today.key)]:
             # print(u"穿过布林带中间线， 买入", "pre_close=", str(today.pre_close), "middle=", str(middle[int(today.key) - 1]),
             #       "close=", str(today.close), "middle=", str(middle[int(today.key)]), 'date=', str(today.date))
-            order = self.buy_today()
-            if order is not None:
-                today_record = FuTodayCanBuyRecord()
-                today_record.record_today_can_buy_stock(today, self.kl_pd.name, 2)
-            return order
+            # order = self.buy_today()
+            return self.buy_today()

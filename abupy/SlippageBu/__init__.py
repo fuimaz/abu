@@ -5,6 +5,7 @@ from .ABuSlippageBuyMean import AbuSlippageBuyMean
 from .ABuSlippageSellBase import AbuSlippageSellBase
 from .ABuSlippageSellMean import AbuSlippageSellMean
 from .FuSlippageBuyClose import FuSlippageBuyClose
+from .FuSlippageBuyOpen import FuSlippageBuyOpen
 
 from . import ABuSlippage as slippage
 
@@ -14,4 +15,5 @@ __all__ = [
     'AbuSlippageSellBase',
     'AbuSlippageSellMean',
     'FuSlippageBuyClose',
+    'FuSlippageBuyOpen',
     'slippage']

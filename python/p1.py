@@ -68,7 +68,7 @@ def sample_a21():
     # choice_symbols = ['601398', '600028', '601857', '601318', '600036', '000002', '600050', '600030']
     choice_symbols = ['600036']
 
-    print(ABuSymbolPd.make_kl_df('601398', parallel=False).tail())
+    print(ABuSymbolPd.make_kl_df('603993', parallel=False).tail())
 
 
 '''绘制趋势线'''
@@ -151,6 +151,6 @@ def sample_macd():
     # nd.macd.plot_macd_from_klpd(kl_pd)
 
 if __name__ == "__main__":
-    # sample_a21()
-    sample_13()
+    sample_a21()
+    # sample_13()
     # sample_macd()

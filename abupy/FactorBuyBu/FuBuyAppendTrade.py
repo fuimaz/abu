@@ -44,4 +44,4 @@ class FuBuyAppendTrade(AbuFactorBuyXD, BuyCallMixin):
                 #           str(middle[int(today.key) - 1]),
                 #           "close=", str(today.close), "middle=", str(middle[int(today.key)]), 'date=', str(today.date))
                 # print("补仓")
-                return self.buy_tomorrow()
+                return self.buy_today()
