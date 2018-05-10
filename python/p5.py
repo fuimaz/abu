@@ -22,8 +22,9 @@ from abupy.UtilBu.ABuFileUtil import load_df_csv
 ABuEnv.g_market_target = abupy.EMarketTargetType.E_MARKET_TARGET_CN
 
 now_df = None
-can_buy_df = pd.DataFrame(columns=['symbol', 'price', 'type'])
+can_buy_df = pd.DataFrame(columns=['symbol', 'price', 'type', 'profit_sum', 'profit_cgs'])
 all_symbols = []
+actions_df = None
 
 
 def fetch_all_now():
@@ -33,12 +34,18 @@ def fetch_all_now():
         if now_df is None or len(now_df) == 0:
             time.sleep(10)
             continue
+
+        ABuFileUtil.dump_df_csv(ABuEnv.g_project_cache_dir + "/today_df.csv", now_df)
+        now_df = load_df_csv(ABuEnv.g_project_cache_dir + '/today_df.csv')
         return now_df
-    # now_df = load_df_csv('/Users/juchen/PycharmProjects/stock/data/day_all/2018-05-08.csv')
+    # now_df = load_df_csv('/Users/juchen/PycharmProjects/stock/data/day_all/2018-05-09.csv')
 
 
-def parse_one_stock(his_df, symbol):
-
+def parse_one_stock(his_df, symbol, symbol_complete):
+    profit_sum, profit_cgs = parse_actions(symbol_complete)
+    if profit_sum < 0:
+        logging.info('profit_sum < 0, symbol={}, profit_cgs={}'.format(symbol_complete, profit_cgs))
+        return
 
     global can_buy_df
     all_close = his_df.close.copy()
@@ -49,7 +56,7 @@ def parse_one_stock(his_df, symbol):
     now_price_s = stock_now.trade.astype(float)
     all_close.add(now_price_s)
     if len(stock_now["trade"].values) == 0:
-        logging.error("today price null, %s" % symbol)
+        logging.error("today price null, {}".format(symbol))
         return
 
     now_price = stock_now["trade"].values.tolist()[0]
@@ -58,11 +65,11 @@ def parse_one_stock(his_df, symbol):
 
     if his_df.close[len(his_df.close) - 1] < middle[len(middle) - 2] \
             and now_price > middle[len(middle) - 1]:
-        df_temp = pd.DataFrame([[str(symbol), now_price, 'boll']], columns=['symbol', 'price', 'type'])
+        df_temp = pd.DataFrame([[str(symbol), now_price, 'boll', profit_sum, profit_cgs]], columns=['symbol', 'price', 'type', 'profit_sum', 'profit_cgs'])
         can_buy_df = can_buy_df.append(df_temp)
     if dif[len(dif) - 2] < dea[len(dea) - 2] \
             and dif[len(dif) - 1] >= dea[len(dea) - 1]:
-        df_temp = pd.DataFrame([[str(symbol), now_price, 'macd']], columns=['symbol', 'price', 'type'])
+        df_temp = pd.DataFrame([[str(symbol), now_price, 'macd', profit_sum, profit_cgs]], columns=['symbol', 'price', 'type', 'profit_sum', 'profit_cgs'])
         can_buy_df = can_buy_df.append(df_temp)
 
 
@@ -77,7 +84,7 @@ def for_each_dir():
             if is_stock(sfile) is False:
                 continue
 
-            parse_one_stock(his_df,  parse_symbol(sfile))
+            parse_one_stock(his_df,  parse_symbol(sfile), sfile.split('_')[0])
 
 
 def parse_symbol(fname):
@@ -101,13 +108,19 @@ def store_today_can_buy_stock():
     ABuFileUtil.ensure_dir(fn)
     ABuFileUtil.dump_df_csv(fn, can_buy_df)
 
+
+def parse_actions(symbol):
+    global actions_df
+    s_df = actions_df[actions_df.symbol == symbol]
+    return s_df['profit_cg'].sum(), s_df['profit_cg'].tolist()
+
+
 if __name__ == "__main__":
+    global actions_df
+    actions_df = load_df_csv(ABuEnv.g_project_cache_dir + '/orders.csv')
+    # profit_sum, profit_cgs = parse_actions('sz002567')
     global all_symbols
     all_symbols = all_symbol()
     fetch_all_now()
-    # print(int('000001'))
-    # stock_now = now_df[now_df.code == int('000001')]
-    # now_price = float(stock_now.trade)
-    # print(now_price)
     for_each_dir()
     store_today_can_buy_stock()
