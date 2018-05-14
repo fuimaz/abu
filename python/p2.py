@@ -100,7 +100,6 @@ def sample_a21():
 def sample_a22():
     # 设置初始资金数
     read_cash = 5000000
-    today_record = FuTodayCanBuyRecord()
 
     abupy.env.g_enable_ump_main_deg_block = True
     abupy.env.g_enable_ump_main_jump_block = True
@@ -116,7 +115,8 @@ def sample_a22():
                       # '600887', '600029', '000002', '600196', '002024', '002241', '600050', '601989', '601992', '601901']
     # choice_symbols = ['601398', '601988', '601939', '603993', '600196', '600660', '600703', '600887', '600999', '300059', '600900', '601328', '601288', '600887', '600029', '000002']
 
-    choice_symbols = today_record.load_today_stock_list()
+    choice_symbols = load_today_stock_list()
+    print(choice_symbols)
 
     abu_result_tuple, _ = abu.run_loop_back(read_cash,
                                             buy_factors, sell_factors, stock_pickers, choice_symbols=choice_symbols,
@@ -148,7 +148,7 @@ def sample_a22():
 
 def sample_a23():
     # 设置初始资金数
-    read_cash = 50000000
+    read_cash = 500000000
 
     # abupy.env.g_enable_ump_main_deg_block = True
     # abupy.env.g_enable_ump_main_jump_block = True
@@ -168,22 +168,23 @@ def sample_a23():
 
     # 择时股票池
     # choice_symbols = ['603993', '601998', '601992', '601991', '601989', '601988', '601985', '601939', '601933', '601919', '601901', '601899', '601898', '601881', '601877', '601857', '601828', '601818', '601808', '601800', '601788', '601766', '601727', '601688', '601669', '601668', '601633', '601628', '601618', '601607', '601601', '601600', '601398', '601390', '601360', '601328', '601288', '601238', '601229', '601225', '601211', '601186', '601169', '601166', '601155', '601111', '601108', '601088', '601018', '601012', '601009', '601006', '600999', '600958', '600919', '600900', '600893', '600887', '600837', '600816', '600795', '600703', '600690', '600688', '600663', '600660', '600606', '600600', '600588', '600585', '600518', '600487', '600406', '600398', '600383', '600362', '600346', '600340', '600309', '600297', '600221', '600196', '600188', '600176', '600115', '600111', '600104', '600061', '600050', '600048', '600036', '600031', '600030', '600029', '600028', '600025', '600023', '600019', '600018', '600016', '600015', '600011', '600010', '600000', '300498', '300433', '300124', '300072', '300070', '300059', '300015', '300003', '002739', '002736', '002714', '002600', '002558', '002493', '002475', '002456', '002450', '002415', '002310', '002252', '002241', '002236', '002202', '002142', '002120', '002044', '002027', '002024', '002010', '001979', '001965', '000895', '000776', '000725', '000617', '000166', '000069', '000063', '000039', '000002', '000001']
-    # choice_symbols = ['601398']
+    choice_symbols = ['601398']
     # choice_symbols = ['600036']
     # choice_symbols = ['601398', '601988', '601939', '601328', '601288', '600887', '600029', '000002']
-    choice_symbols = ['601398', '601988', '601939', '603993', '600999', '300059', '600900', '601328', '601288',
-                      '600887', '600029', '000002', '002024', '002241', '600050', '601989', '601992', '601901']
+    #choice_symbols = ['601398', '601988', '601939', '603993', '600999', '300059', '600900', '601328', '601288',
+    #                  '600887', '600029', '000002', '002024', '002241', '600050', '601989', '601992', '601901']
 
     abu_result_tuple, _ = abu.run_loop_back(read_cash,
                                             buy_factors, sell_factors, stock_pickers, choice_symbols=choice_symbols,
-                                            n_folds=6, start='2012-04-20', end='2018-04-20', commission_dict=commission_dict)
+                                            start='2012-04-20', end='2018-04-20', commission_dict=commission_dict)
+
+    print(abu_result_tuple.orders_pd)
 
     # 把运行的结果保存在本地，以便之后分析回测使用，保存回测结果数据代码如下所示
-    abu.store_abu_result_tuple(abu_result_tuple, n_folds=6, store_type=abupy.EStoreAbu.E_STORE_CUSTOM_NAME,
-                               custom_name='18_top_train_cn')
+    abu.store_abu_result_tuple(abu_result_tuple, n_folds=6, store_type=abupy.EStoreAbu.E_STORE_TEST)
+                               #custom_name='20_top_test_cn')
 
-    abu.store_abu_result_tuple(abu_result_tuple, n_folds=6, store_type=abupy.EStoreAbu.E_STORE_CUSTOM_NAME,
-                               custom_name='18_top_test_cn')
+    abu.store_abu_result_tuple(abu_result_tuple, n_folds=6, store_type=abupy.EStoreAbu.E_STORE_TRAIN)
 
     AbuMetricsBase.show_general(*abu_result_tuple, only_show_returns=True)
 
@@ -214,10 +215,21 @@ def load_today_stock_list():
     stock_list = []
     raw_list = set(df.symbol.tolist())
     for symbol in raw_list:
-        stock_list.append(str(symbol))
+        code = str(symbol)
+        if len(code) == 5:
+            code = '0' + code
+        elif len(code) == 4:
+            code = '00' + code
+        elif len(code) == 3:
+            code = '000' + code
+        elif len(code) == 2:
+            code = '0000' + code
+        elif len(code) == 1:
+            code = '00000' + code
+        stock_list.append(code)
     return stock_list
 
 if __name__ == "__main__":
-    sample_a21()
+    # sample_a21()
     # sample_a22()
-    # sample_a23()
+    sample_a23()
