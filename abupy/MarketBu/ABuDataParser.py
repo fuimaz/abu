@@ -136,8 +136,15 @@ class TXParser(object):
 
             if 'qfqday' in data.keys():
                 data = data['qfqday']
-            else:
+            # fu 读取字段变更
+            elif 'qfqweek' in data.keys():
+                data = data['qfqweek']
+            elif 'week' in data.keys():
+                data = data['week']
+            elif 'day' in data.keys():
                 data = data['day']
+            else:
+                return
 
             # 为AbuDataParseWrap准备类必须的属性序列
             if len(data) > 0:

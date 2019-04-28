@@ -54,8 +54,10 @@ def plot_his_trade(orders, kl_pd):
     fig_dims = (ax_cnt, 1)
 
     with AbuProgress(len(orders), 0) as pg:
-        for index, order in enumerate(orders):
-            pg.show(index + 1)
+        # for index, order in enumerate(orders.values):
+        i = 0
+        for index, order in orders.iterrows():
+            pg.show(i + 1)
             # 迭代所有orders，对每一个AbuOrder对象绘制交易细节
             mask_date = all_pd['date'] == order.buy_date
             st_key = all_pd[mask_date]['key']
@@ -64,12 +66,13 @@ def plot_his_trade(orders, kl_pd):
                 rv_pd = all_pd.iloc[st_key.values[0]:, :]
             else:
                 mask_sell_date = all_pd['date'] == order.sell_date
+                # mask_sell_date = all_pd['date'] == orders.sell_date[index]
                 st_sell_key = all_pd[mask_sell_date]['key']
                 rv_pd = all_pd.iloc[st_key.values[0]:st_sell_key.values[0], :]
 
             if draw_multi_ax:
                 # ipython环境绘制在多个子画布上
-                plt.subplot2grid(fig_dims, (index, 0))
+                plt.subplot2grid(fig_dims, (i, 0))
             # 绘制价格曲线
             plt.plot(all_pd.index, all_pd['close'], label='close')
 
@@ -130,10 +133,11 @@ def plot_his_trade(orders, kl_pd):
                              arrowprops=dict(facecolor='yellow'),
                              horizontalalignment='left', verticalalignment='top')
             # title使用时间序列symbol
-            plt.title(order.buy_symbol)
+            plt.title(order.symbol)
             if not draw_multi_ax:
                 # ipython环境绘制在多个子画布上，普通python环境绘制一个show一个
                 plt.show()
+            i += 1
 
     plt.show()
 

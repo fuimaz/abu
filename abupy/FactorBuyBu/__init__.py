@@ -10,6 +10,7 @@ from .ABuFactorBuyTrend import AbuUpDownTrend, AbuDownUpTrend, AbuUpDownGolden
 from .MyBuyBollBreak import MyBuyBollBreak
 from .FuBuyAppendTrade import FuBuyAppendTrade
 from .FuBuyRsiBreak import FuBuyRsiBreak
+from .FuWeekBuyBollBreak import FuWeekBuyBollBreak
 
 __all__ = [
     'AbuFactorBuyBase',
@@ -32,5 +33,6 @@ __all__ = [
     'AbuUpDownGolden',
     'FuBuyAppendTrade',
     'MyBuyBollBreak',
+    'FuWeekBuyBollBreak',
     'FuBuyRsiBreak'
 ]

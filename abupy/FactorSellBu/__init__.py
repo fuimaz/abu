@@ -8,6 +8,7 @@ from .ABuFactorSellBreak import AbuFactorSellBreak
 from .ABuFactorSellNDay import AbuFactorSellNDay
 from .ABuFactorSellDM import AbuDoubleMaSell
 from .MyBollSellBreak import MyBollSellBreak
+from .FuWeekBollSellBreak import FuWeekBollSellBreak
 
 # noinspection all
 from . import ABuFS as fs
@@ -23,5 +24,6 @@ __all__ = [
     'AbuFactorSellNDay',
     'AbuDoubleMaSell',
     'MyBollSellBreak',
+    'FuWeekBollSellBreak',
     'fs'
 ]
